@@ -76,7 +76,6 @@ def main():
     print("Bienvenido a ZCalc\nTu calculadora modular de confianza!")
     while True:
         try:
-            print("Zn = {0, 1, 2, ..., n-1}")
             print("1. SumaM")
             print("2. MultiplicaciónM")
             print("3. DivisiónM")
