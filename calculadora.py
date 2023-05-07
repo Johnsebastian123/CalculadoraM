@@ -26,12 +26,14 @@ def potencia_modulo(a, b, n):
     return gmpy2.powmod(a, b, n)
 
 
-def inverso_modulo(a, n):
-    a = a % n
-    g, x, y = gmpy2.gcdext(a, n)
-    if g != 1:
-        raise ValueError("No existe el inverso multiplicativo modular")
-    return gmpy2.f_mod(x, n)
+def inversibles_modulo(a, n):
+    inversibles = []
+    for i in range(n):
+        if gmpy2.gcd(i, n) == 1:
+            if gmpy2.gcd(a, n) == 1:
+                inversibles.append(i)
+    return inversibles
+
 
 
 ## Algoritmo de Tonelli-Shanks
@@ -154,13 +156,14 @@ def main():
                 print("Ingresa un número de Zn (a)")
                 a = gmpy2.mpz(input())
                 a = a % n
-                print("Ingresa un número de Zn (b)")
-                b = gmpy2.mpz(input())
-                b = b % n
-                resultado_a = inverso_modulo(a, n)
-                resultado_b = inverso_modulo(b, n)
-                print("InvM en a=", resultado_a)
-                print("InvM en b=", resultado_b)
+                resultado_a = inversibles_modulo(a, n)
+
+                if len(resultado_a) > 0:
+                    print("InvM=", resultado_a)
+                    print("La cantidad de inversos=", len(resultado_a))
+                else:
+                    print("No en Zn")
+
             elif eleccion == 6:
                 print("Ingresa un número entero positivo (n)")
                 n = gmpy2.mpz(input())
