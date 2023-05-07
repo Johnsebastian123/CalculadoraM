@@ -65,15 +65,13 @@ def raiz_cuadrada_modulo(a, n):
         return (b, n - b)
 
 
-def lista_cuadrados_perfectos(n):
-    cuadrados_perfectos = []
+def lista_cuadrados_modulo(a, n):
+    cuadrados_modulo = []
     for i in range(n):
-        cuadrado = gmpy2.square(i)
-        if cuadrado == n:
-            cuadrados_perfectos.append(i)
-        elif cuadrado > n:
-            break
-    return cuadrados_perfectos
+        cuadrado = gmpy2.powmod(i, 2, n)
+        if cuadrado == a % n:
+            cuadrados_modulo.append(i)
+    return cuadrados_modulo
 
 
 def main():
@@ -185,7 +183,10 @@ def main():
                 while n <= 0:
                     print("Ingresa un número entero positivo (n)")
                     n = gmpy2.mpz(input())
-                resultado = lista_cuadrados_modulo(n)
+                print("Ingresa un número de Zn (a)")
+                a = gmpy2.mpz(input())
+                a = a % n
+                resultado = lista_cuadrados_modulo(n, a)
                 if len(resultado) > 0:
                     print("CuadradosPerfectosM=", resultado)
                     print("La cantidad de cuadrados perfectos=", len(resultado))
