@@ -162,7 +162,7 @@ def main():
                     print("InvM=", resultado_a)
                     print("La cantidad de inversos=", len(resultado_a))
                 else:
-                    print("No en Zn")
+                    print("No existe en Zn")
 
             elif eleccion == 6:
                 print("Ingresa un número entero positivo (n)")
