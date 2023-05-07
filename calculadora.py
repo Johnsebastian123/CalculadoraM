@@ -65,12 +65,15 @@ def raiz_cuadrada_modulo(a, n):
         return (b, n - b)
 
 
-def lista_cuadrados_modulo(n):
-    cuadrados = []
+def lista_cuadrados_perfectos(n):
+    cuadrados_perfectos = []
     for i in range(n):
-        if gmpy2.legendre(i, n) == 1:
-            cuadrados.append(i)
-    return cuadrados
+        cuadrado = gmpy2.square(i)
+        if cuadrado == n:
+            cuadrados_perfectos.append(i)
+        elif cuadrado > n:
+            break
+    return cuadrados_perfectos
 
 
 def main():
