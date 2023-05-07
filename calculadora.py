@@ -34,6 +34,7 @@ def inverso_modulo(a, n):
     return gmpy2.f_mod(x, n)
 
 
+## Algoritmo de Tonelli-Shanks
 def raiz_cuadrada_modulo(a, n):
     if gmpy2.legendre(a, n) != 1:
         return "No existe la raíz cuadrada modular"
