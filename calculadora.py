@@ -15,6 +15,8 @@ def multiplicacion_modulo(a, b, n):
 
 
 def division_modular(a,b,n):
+    a = a % n
+    b = b % n
     try:
         inv = pow(b,-1, n)
         print(inv)
