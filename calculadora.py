@@ -33,13 +33,12 @@ def potencia_modular(a, b, n):
     return gmpy2.powmod(a, b, n)
 
 
-def inversos_multiplicativos_modulo(a, n):
+def inversos_multiplicativos_modulo( n):
     inversos = []
     for i in range(n):
         if gmpy2.gcd(i, n) == 1:
-            if gmpy2.gcd(a, n) == 1:
-                inverso = gmpy2.invert(i, n)
-                inversos.append(inverso)
+            inverso = gmpy2.invert(i, n)
+            inversos.append(inverso)
     return inversos
 
 
@@ -186,14 +185,7 @@ def main():
                 while n <= 0:
                     print("Ingresa un número entero positivo (n)")
                     n = gmpy2.mpz(input())
-                print("Ingresa un número de Zn (a)")
-                a = gmpy2.mpz(input())
-                a = a % n
-                if a >= 0:
-                    a = a
-                else:
-                    a = abs(a)
-                resultado_a = inversos_multiplicativos_modulo(a,n)
+                resultado_a = inversos_multiplicativos_modulo(n)
                 print("InvM=", resultado_a)
                 print(len(resultado_a))
 
