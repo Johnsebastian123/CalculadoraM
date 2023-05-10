@@ -13,67 +13,68 @@ def multiplicacion_modulo(a, b, n):
     return gmpy2.f_mod(a * b, n)
 
 
-def division_modulo(a, b, n):
-    a = a % n
-    b = b % n
-    if gmpy2.gcd(b, n) != 1:
-        raise ValueError("No existe el inverso multiplicativo modular")
-    return gmpy2.f_mod(a * gmpy2.invert(b, n), n)
+def division_modular(dividendo, divisor, modulo):
+        try:
+            a = gmpy2.mpz(dividendo)
+            b = gmpy2.mpz(divisor)
+            c = gmpy2.mpz(modulo)
+
+            resultado = gmpy2.f_mod(a // b, c)
+
+            return resultado
+
+        except (ValueError, gmpy2.DivisionByZero):
+            print("Error: valores no válidos para la división")
+            return None
 
 
-def potencia_modulo(a, b, n):
+def potencia_modular(a, b, n):
     a = a % n
     return gmpy2.powmod(a, b, n)
 
 
-def inversibles_modulo(a, n):
-    inversibles = []
+def inversos_multiplicativos_modulo(a, n):
+    inversos = []
     for i in range(n):
         if gmpy2.gcd(i, n) == 1:
             if gmpy2.gcd(a, n) == 1:
-                inversibles.append(i)
-    return inversibles
+                inverso = gmpy2.invert(i, n)
+                inversos.append(inverso)
+    return inversos
 
 
+def raices_cuadradas_modulares(a, n):
+    try:
+        a = gmpy2.mpz(a)
+        n = gmpy2.mpz(n)
 
-## Algoritmo de Tonelli-Shanks
-def raiz_cuadrada_modulo(a, n):
-    if gmpy2.legendre(a, n) != 1:
-        return "No existe la raíz cuadrada modular"
-    else:
-        s = 0
-        d = n - 1
-        while d % 2 == 0:
-            s += 1
-            d //= 2
+        if gmpy2.legendre(a, n) != 1:
+            print("Error: a no es un residuo cuadrático módulo n")
+            return None
 
-        m = 2
-        while gmpy2.legendre(m, n) != -1:
-            m += 1
+        raices = []
 
-        b = gmpy2.powmod(a, (d + 1) // 2, n)
-        g = gmpy2.powmod(m, d, n)
-        r = gmpy2.powmod(a, d, n)
+        raiz = gmpy2.powmod(a, (n + 1) // 4, n)
 
-        for i in range(1, s):
-            t = r
-            for j in range(1, s - i):
-                t = gmpy2.powmod(t, 2, n)
-            if gmpy2.powmod(g, 2 ** (s - i - 1), n) == 1:
-                b = (b * t) % n
-                r = (r * gmpy2.powmod(t, 2, n)) % n
-            g = gmpy2.powmod(g, 2, n)
+        if gmpy2.f_mod(gmpy2.square(raiz), n) == a:
+            raices.append(raiz)
 
-        return (b, n - b)
+            if n != 1:
+                raices.append(n - raiz)
 
+        return raices
 
-def lista_cuadrados_modulo(a, n):
-    cuadrados_modulo = []
+    except ValueError:
+        print("Error: valores no válidos para calcular las raíces cuadradas modulares")
+        return None
+
+def cuadrados_perfectos_modulo(a, n):
+    cuadrados_perfectos = []
     for i in range(n):
         cuadrado = gmpy2.powmod(i, 2, n)
         if cuadrado == a % n:
-            cuadrados_modulo.append(i)
-    return cuadrados_modulo
+            cuadrados_perfectos.append(i)
+    return cuadrados_perfectos
 
 
 def main():
@@ -100,9 +101,17 @@ def main():
                 print("Ingresa un número de Zn (a)")
                 a = gmpy2.mpz(input())
                 a = a % n
+                if a >= 0:
+                    a = a
+                else:
+                    a = abs(a)
                 print("Ingresa un número de Zn (b)")
                 b = gmpy2.mpz(input())
                 b = b % n
+                if b >= 0:
+                    b = b
+                else:
+                    b = abs(b)
                 resultado = suma_modulo(a, b, n)
                 print("SumaM=", resultado)
             elif eleccion == 2:
@@ -114,9 +123,17 @@ def main():
                 print("Ingresa un número de Zn (a)")
                 a = gmpy2.mpz(input())
                 a = a % n
+                if a >= 0:
+                    a = a
+                else:
+                    a = abs(a)
                 print("Ingresa un número de Zn (b)")
                 b = gmpy2.mpz(input())
                 b = b % n
+                if b >= 0:
+                    b = b
+                else:
+                    b = abs(b)
                 resultado = multiplicacion_modulo(a, b, n)
                 print("ProductoM=", resultado)
             elif eleccion == 3:
@@ -128,10 +145,18 @@ def main():
                 print("Ingresa un número de Zn (a)")
                 a = gmpy2.mpz(input())
                 a = a % n
+                if a >= 0:
+                    a = a
+                else:
+                    a = abs(a)
                 print("Ingresa un número de Zn (b)")
                 b = gmpy2.mpz(input())
                 b = b % n
-                resultado = division_modulo(a, b, n)
+                if b >= 0:
+                    b = b
+                else:
+                    b = abs(b)
+                resultado = division_modular(a, b, n)
                 print("DivisonM=", resultado)
             elif eleccion == 4:
                 print("Ingresa un número entero positivo (n)")
@@ -142,10 +167,18 @@ def main():
                 print("Ingresa un número de Zn (a)")
                 a = gmpy2.mpz(input())
                 a = a % n
+                if a >= 0:
+                    a = a
+                else:
+                    a = abs(a)
                 print("Ingresa un número de Zn (b)")
                 b = gmpy2.mpz(input())
                 b = b % n
-                resultado = potencia_modulo(a, b, n)
+                if b >= 0:
+                    b = b
+                else:
+                    b = abs(b)
+                resultado = potencia_modular(a, b, n)
                 print("PotenciaM=", resultado)
             elif eleccion == 5:
                 print("Ingresa un número entero positivo (n)")
@@ -156,13 +189,15 @@ def main():
                 print("Ingresa un número de Zn (a)")
                 a = gmpy2.mpz(input())
                 a = a % n
-                resultado_a = inversibles_modulo(a, n)
-
-                if len(resultado_a) > 0:
-                    print("InvM=", resultado_a)
-                    print("La cantidad de inversos=", len(resultado_a))
+                if a >= 0:
+                    a = a
                 else:
-                    print("No existe en Zn")
+                    a = abs(a)
+                resultado_a = inversos_multiplicativos_modulo(a,n)
+                print("InvM=", resultado_a)
+                print(len(resultado_a))
+
+
 
             elif eleccion == 6:
                 print("Ingresa un número entero positivo (n)")
@@ -173,13 +208,12 @@ def main():
                 print("Ingresa un número de Zn (a)")
                 a = gmpy2.mpz(input())
                 a = a % n
-                print("Ingresa un número de Zn (b)")
-                b = gmpy2.mpz(input())
-                b = b % n
-                resultado_a = raiz_cuadrada_modulo(a, n)
-                resultado_b = raiz_cuadrada_modulo(b, n)
+                if a >= 0:
+                    a = a
+                else:
+                    a = abs(a)
+                resultado_a = raices_cuadradas_modulares(a,n)
                 print("Las raíces cuadradas modulares en n de a son:", resultado_a)
-                print("Las raíces cuadradas modulares en n de b son:", resultado_b)
             elif eleccion == 7:
                 print("Ingresa un número entero positivo (n)")
                 n = gmpy2.mpz(input())
@@ -189,7 +223,8 @@ def main():
                 print("Ingresa un número de Zn (a)")
                 a = gmpy2.mpz(input())
                 a = a % n
-                resultado = lista_cuadrados_modulo(n, a)
+
+                resultado = cuadrados_perfectos_modulo(a,n)
                 if len(resultado) > 0:
                     print("CuadradosPerfectosM=", resultado)
                     print("La cantidad de cuadrados perfectos=", len(resultado))
@@ -199,6 +234,3 @@ def main():
                 print("Elección inválida, Intenta otra vez")
         except ValueError as e:
             print("Error:", e)
-
-
-
