@@ -19,7 +19,6 @@ def division_modular(a,b,n):
     b = b % n
     try:
         inv = pow(b,-1, n)
-        print(inv)
         if inv != 0:
             return ((a * inv) % n)
     except (ValueError, ZeroDivisionError):
